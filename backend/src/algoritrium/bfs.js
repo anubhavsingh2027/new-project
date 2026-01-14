@@ -119,3 +119,82 @@ function bfs(graph, startVertex) {
   return result;
 }
 `;
+
+exports.bfsCpp = `
+// Breadth-First Search (BFS) Algorithm in C++
+// BFS explores nodes level by level, using a queue data structure
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <queue>
+#include <unordered_set>
+
+using namespace std;
+
+class Graph {
+private:
+  unordered_map<int, vector<int>> adjacencyList;
+
+public:
+  // Add a vertex to the graph
+  void addVertex(int vertex) {
+    if (adjacencyList.find(vertex) == adjacencyList.end()) {
+      adjacencyList[vertex] = vector<int>();
+    }
+  }
+
+  // Add an edge between two vertices
+  void addEdge(int vertex1, int vertex2) {
+    addVertex(vertex1);
+    addVertex(vertex2);
+    adjacencyList[vertex1].push_back(vertex2);
+    adjacencyList[vertex2].push_back(vertex1); // For undirected graph
+  }
+
+  // BFS traversal starting from a given vertex
+  vector<int> bfs(int startVertex) {
+    unordered_set<int> visited;
+    queue<int> q;
+    vector<int> result;
+
+    visited.insert(startVertex);
+    q.push(startVertex);
+
+    while (!q.empty()) {
+      int vertex = q.front();
+      q.pop();
+      result.push_back(vertex);
+
+      for (int neighbor : adjacencyList[vertex]) {
+        if (visited.find(neighbor) == visited.end()) {
+          visited.insert(neighbor);
+          q.push(neighbor);
+        }
+      }
+    }
+
+    return result;
+  }
+};
+
+// Example usage
+int main() {
+  Graph graph;
+
+  graph.addEdge(0, 1);
+  graph.addEdge(0, 2);
+  graph.addEdge(1, 3);
+  graph.addEdge(2, 4);
+
+  vector<int> result = graph.bfs(0);
+  
+  cout << "BFS Traversal: ";
+  for (int vertex : result) {
+    cout << vertex << " ";
+  }
+  cout << endl;
+
+  return 0;
+}
+`;
