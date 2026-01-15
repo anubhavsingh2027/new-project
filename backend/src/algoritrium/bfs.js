@@ -188,7 +188,7 @@ int main() {
   graph.addEdge(2, 4);
 
   vector<int> result = graph.bfs(0);
-  
+
   cout << "BFS Traversal: ";
   for (int vertex : result) {
     cout << vertex << " ";
@@ -197,4 +197,75 @@ int main() {
 
   return 0;
 }
+`;
+
+exports.bfsPython = `
+# Breadth-First Search (BFS) Algorithm in Python
+# BFS explores nodes level by level, using a queue data structure
+
+from collections import deque, defaultdict
+
+class Graph:
+  def __init__(self):
+    self.adjacency_list = defaultdict(list)
+  
+  # Add an edge between two vertices
+  def add_edge(self, vertex1, vertex2):
+    self.adjacency_list[vertex1].append(vertex2)
+    self.adjacency_list[vertex2].append(vertex1)  # For undirected graph
+  
+  # BFS traversal starting from a given vertex
+  def bfs(self, start_vertex):
+    visited = set([start_vertex])
+    queue = deque([start_vertex])
+    result = []
+    
+    while queue:
+      vertex = queue.popleft()
+      result.append(vertex)
+      
+      for neighbor in self.adjacency_list[vertex]:
+        if neighbor not in visited:
+          visited.add(neighbor)
+          queue.append(neighbor)
+    
+    return result
+  
+  # BFS to find shortest path between two vertices
+  def shortest_path(self, start_vertex, end_vertex):
+    visited = set([start_vertex])
+    queue = deque([(start_vertex, [start_vertex])])
+    
+    while queue:
+      vertex, path = queue.popleft()
+      
+      if vertex == end_vertex:
+        return path
+      
+      for neighbor in self.adjacency_list[vertex]:
+        if neighbor not in visited:
+          visited.add(neighbor)
+          queue.append((neighbor, path + [neighbor]))
+    
+    return None  # No path found
+
+# Example usage
+graph = Graph()
+
+# Add edges
+graph.add_edge("A", "B")
+graph.add_edge("A", "C")
+graph.add_edge("B", "D")
+graph.add_edge("C", "E")
+graph.add_edge("D", "E")
+graph.add_edge("E", "F")
+
+# BFS traversal from 'A'
+print("BFS Traversal from A:", graph.bfs("A"))
+
+# Find shortest path from 'A' to 'F'
+print("Shortest path from A to F:", graph.shortest_path("A", "F"))
+
+# Find shortest path from 'A' to 'E'
+print("Shortest path from A to E:", graph.shortest_path("A", "E"))
 `;
