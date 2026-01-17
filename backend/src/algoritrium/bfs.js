@@ -1,3 +1,26 @@
+exports.bfsAlgo = `
+// BFS Algorithm - Concise Implementation
+function bfs(graph, startVertex) {
+  const visited = new Set([startVertex]);
+  const queue = [startVertex];
+  const result = [];
+
+  while (queue.length > 0) {
+    const vertex = queue.shift();
+    result.push(vertex);
+
+    for (const neighbor of graph[vertex] || []) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  return result;
+}
+`;
+
 exports.bfsJavaScript=
 `
 // Breadth-First Search (BFS) Algorithm
@@ -96,30 +119,6 @@ console.log("Shortest path from A to E:", graph.shortestPath("A", "E"));
 
 module.exports = Graph;
 `
-
-exports.bfsAlgo = `
-// BFS Algorithm - Concise Implementation
-function bfs(graph, startVertex) {
-  const visited = new Set([startVertex]);
-  const queue = [startVertex];
-  const result = [];
-
-  while (queue.length > 0) {
-    const vertex = queue.shift();
-    result.push(vertex);
-
-    for (const neighbor of graph[vertex] || []) {
-      if (!visited.has(neighbor)) {
-        visited.add(neighbor);
-        queue.push(neighbor);
-      }
-    }
-  }
-
-  return result;
-}
-`;
-
 exports.bfsCpp = `
 // Breadth-First Search (BFS) Algorithm in C++
 // BFS explores nodes level by level, using a queue data structure
