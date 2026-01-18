@@ -1,3 +1,5 @@
+
+exports.dfsJavascript=`
 // Depth-First Search (DFS) Algorithm
 // DFS explores as far as possible along each branch before backtracking, using a stack or recursion
 
@@ -124,7 +126,6 @@ class Graph {
   }
 }
 
-// Example usage
 const graph = new Graph();
 
 // Add edges
@@ -148,3 +149,5 @@ console.log("Has Cycle:", graph.hasCycle());
 console.log("Connected Components:", graph.getConnectedComponents());
 
 module.exports = Graph;
+
+`;
