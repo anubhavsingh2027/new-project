@@ -1,3 +1,58 @@
+exports.dfsAlgo=`
+// Depth-First Search (DFS) Algorithm
+// DFS explores as far as possible along each branch before backtracking, using a stack or recursion
+
+class Graph {
+  constructor() {
+    this.adjacencyList = new Map();
+  }
+
+  addVertex(vertex) {
+    if (!this.adjacencyList.has(vertex)) {
+      this.adjacencyList.set(vertex, []);
+    }
+  }
+
+  addEdge(vertex1, vertex2) {
+    this.addVertex(vertex1);
+    this.addVertex(vertex2);
+    this.adjacencyList.get(vertex1).push(vertex2);
+    this.adjacencyList.get(vertex2).push(vertex1);
+  }
+
+  dfsRecursive(startVertex, visited = new Set(), result = []) {
+    visited.add(startVertex);
+    result.push(startVertex);
+    const neighbors = this.adjacencyList.get(startVertex) || [];
+    for (const neighbor of neighbors) {
+      if (!visited.has(neighbor)) {
+        this.dfsRecursive(neighbor, visited, result);
+      }
+    }
+    return result;
+  }
+
+  dfsIterative(startVertex) {
+    const visited = new Set();
+    const stack = [startVertex];
+    const result = [];
+    visited.add(startVertex);
+    while (stack.length > 0) {
+      const vertex = stack.pop();
+      result.push(vertex);
+      const neighbors = this.adjacencyList.get(vertex) || [];
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          visited.add(neighbor);
+          stack.push(neighbor);
+        }
+      }
+    }
+    return result;
+  }
+}
+`;
+
 
 exports.dfsJavascript=`
 // Depth-First Search (DFS) Algorithm
