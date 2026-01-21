@@ -370,3 +370,146 @@ int main() {
   return 0;
 }
 `;
+
+exports.dfsjava=`
+// Depth-First Search (DFS) Algorithm
+// DFS explores as far as possible along each branch before backtracking, using a stack or recursion
+
+import java.util.*;
+
+
+class Graph {
+  private Map<Character, List<Character>> adjacencyList;
+
+  public Graph() {
+    this.adjacencyList = new HashMap<>();
+  }
+
+  public void addVertex(char vertex) {
+    adjacencyList.putIfAbsent(vertex, new ArrayList<>());
+  }
+
+  public void addEdge(char vertex1, char vertex2) {
+    addVertex(vertex1);
+    addVertex(vertex2);
+    adjacencyList.get(vertex1).add(vertex2);
+    adjacencyList.get(vertex2).add(vertex1);
+  }
+
+  public List<Character> dfsRecursive(char startVertex) {
+    Set<Character> visited = new HashSet<>();
+    List<Character> result = new ArrayList<>();
+    dfsRecursiveHelper(startVertex, visited, result);
+    return result;
+  }
+
+  private void dfsRecursiveHelper(char vertex, Set<Character> visited, List<Character> result) {
+    visited.add(vertex);
+    result.add(vertex);
+
+    for (char neighbor : adjacencyList.getOrDefault(vertex, new ArrayList<>())) {
+      if (!visited.contains(neighbor)) {
+        dfsRecursiveHelper(neighbor, visited, result);
+      }
+    }
+  }
+
+  public List<Character> dfsIterative(char startVertex) {
+    Set<Character> visited = new HashSet<>();
+    Stack<Character> stack = new Stack<>();
+    List<Character> result = new ArrayList<>();
+
+    visited.add(startVertex);
+    stack.push(startVertex);
+
+    while (!stack.isEmpty()) {
+      char vertex = stack.pop();
+      result.add(vertex);
+
+      for (char neighbor : adjacencyList.getOrDefault(vertex, new ArrayList<>())) {
+        if (!visited.contains(neighbor)) {
+          visited.add(neighbor);
+          stack.push(neighbor);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  public boolean hasCycle() {
+    Set<Character> visited = new HashSet<>();
+    Set<Character> recursionStack = new HashSet<>();
+
+    for (char vertex : adjacencyList.keySet()) {
+      if (!visited.contains(vertex)) {
+        if (dfsHasCycleHelper(vertex, visited, recursionStack)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  private boolean dfsHasCycleHelper(char vertex, Set<Character> visited, Set<Character> recursionStack) {
+    visited.add(vertex);
+    recursionStack.add(vertex);
+
+    for (char neighbor : adjacencyList.getOrDefault(vertex, new ArrayList<>())) {
+      if (!visited.contains(neighbor)) {
+        if (dfsHasCycleHelper(neighbor, visited, recursionStack)) {
+          return true;
+        }
+      } else if (recursionStack.contains(neighbor)) {
+        return true;
+      }
+    }
+
+    recursionStack.remove(vertex);
+    return false;
+  }
+
+  public List<List<Character>> getConnectedComponents() {
+    Set<Character> visited = new HashSet<>();
+    List<List<Character>> components = new ArrayList<>();
+
+    for (char vertex : adjacencyList.keySet()) {
+      if (!visited.contains(vertex)) {
+        List<Character> component = new ArrayList<>();
+        dfsComponentHelper(vertex, visited, component);
+        components.add(component);
+      }
+    }
+
+    return components;
+  }
+
+  private void dfsComponentHelper(char vertex, Set<Character> visited, List<Character> component) {
+    visited.add(vertex);
+    component.add(vertex);
+
+    for (char neighbor : adjacencyList.getOrDefault(vertex, new ArrayList<>())) {
+      if (!visited.contains(neighbor)) {
+        dfsComponentHelper(neighbor, visited, component);
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    Graph graph = new Graph();
+
+    graph.addEdge('A', 'B');
+    graph.addEdge('A', 'C');
+    graph.addEdge('B', 'D');
+    graph.addEdge('C', 'E');
+    graph.addEdge('D', 'E');
+    graph.addEdge('E', 'F');
+
+    System.out.println("DFS (Recursive) from A: " + graph.dfsRecursive('A'));
+    System.out.println("DFS (Iterative) from A: " + graph.dfsIterative('A'));
+    System.out.println("Has Cycle: " + graph.hasCycle());
+    System.out.println("Connected Components: " + graph.getConnectedComponents());
+  }
+}
+`;
