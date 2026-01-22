@@ -1,4 +1,4 @@
-exports.dfsAlgo=`
+exports.dfsAlgo = `
 // Depth-First Search (DFS) Algorithm
 // DFS explores as far as possible along each branch before backtracking, using a stack or recursion
 
@@ -53,8 +53,7 @@ class Graph {
 }
 `;
 
-
-exports.dfsJavascript=`
+exports.dfsJavascript = `
 // Depth-First Search (DFS) Algorithm
 // DFS explores as far as possible along each branch before backtracking, using a stack or recursion
 
@@ -207,7 +206,7 @@ module.exports = Graph;
 
 `;
 
-exports.dfsCpp=`
+exports.dfsCpp = `
 // Depth-First Search (DFS) Algorithm
 // DFS explores as far as possible along each branch before backtracking, using a stack or recursion
 
@@ -371,7 +370,7 @@ int main() {
 }
 `;
 
-exports.dfsjava=`
+exports.dfsjava = `
 // Depth-First Search (DFS) Algorithm
 // DFS explores as far as possible along each branch before backtracking, using a stack or recursion
 
@@ -512,4 +511,115 @@ class Graph {
     System.out.println("Connected Components: " + graph.getConnectedComponents());
   }
 }
+`;
+exports.dfsPython = `
+# Depth-First Search (DFS) Algorithm
+# DFS explores as far as possible along each branch before backtracking, using a stack or recursion
+
+class Graph:
+  def __init__(self):
+    self.adjacency_list = {}
+
+  def add_vertex(self, vertex):
+    if vertex not in self.adjacency_list:
+      self.adjacency_list[vertex] = []
+
+  def add_edge(self, vertex1, vertex2):
+    self.add_vertex(vertex1)
+    self.add_vertex(vertex2)
+    self.adjacency_list[vertex1].append(vertex2)
+    self.adjacency_list[vertex2].append(vertex1)
+
+  def dfs_recursive(self, start_vertex, visited=None, result=None):
+    if visited is None:
+      visited = set()
+    if result is None:
+      result = []
+
+    visited.add(start_vertex)
+    result.append(start_vertex)
+
+    for neighbor in self.adjacency_list.get(start_vertex, []):
+      if neighbor not in visited:
+        self.dfs_recursive(neighbor, visited, result)
+
+    return result
+
+  def dfs_iterative(self, start_vertex):
+    visited = set()
+    stack = [start_vertex]
+    result = []
+
+    visited.add(start_vertex)
+
+    while stack:
+      vertex = stack.pop()
+      result.append(vertex)
+
+      for neighbor in self.adjacency_list.get(vertex, []):
+        if neighbor not in visited:
+          visited.add(neighbor)
+          stack.append(neighbor)
+
+    return result
+
+  def has_cycle(self):
+    visited = set()
+    recursion_stack = set()
+
+    for vertex in self.adjacency_list:
+      if vertex not in visited:
+        if self._dfs_has_cycle(vertex, visited, recursion_stack):
+          return True
+
+    return False
+
+  def _dfs_has_cycle(self, vertex, visited, recursion_stack):
+    visited.add(vertex)
+    recursion_stack.add(vertex)
+
+    for neighbor in self.adjacency_list.get(vertex, []):
+      if neighbor not in visited:
+        if self._dfs_has_cycle(neighbor, visited, recursion_stack):
+          return True
+      elif neighbor in recursion_stack:
+        return True
+
+    recursion_stack.remove(vertex)
+    return False
+
+  def get_connected_components(self):
+    visited = set()
+    components = []
+
+    for vertex in self.adjacency_list:
+      if vertex not in visited:
+        component = []
+        self._dfs_component(vertex, visited, component)
+        components.append(component)
+
+    return components
+
+  def _dfs_component(self, vertex, visited, component):
+    visited.add(vertex)
+    component.append(vertex)
+
+    for neighbor in self.adjacency_list.get(vertex, []):
+      if neighbor not in visited:
+        self._dfs_component(neighbor, visited, component)
+
+
+graph = Graph()
+
+graph.add_edge("A", "B")
+graph.add_edge("A", "C")
+graph.add_edge("B", "D")
+graph.add_edge("C", "E")
+graph.add_edge("D", "E")
+graph.add_edge("E", "F")
+
+print("DFS (Recursive) from A:", graph.dfs_recursive("A"))
+print("DFS (Iterative) from A:", graph.dfs_iterative("A"))
+print("Has Cycle:", graph.has_cycle())
+print("Connected Components:", graph.get_connected_components())
 `;
