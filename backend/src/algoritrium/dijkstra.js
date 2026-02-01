@@ -90,3 +90,36 @@ pair<unordered_map<string, int>, unordered_map<string, string>> dijkstra(const G
 }
 
 `;
+
+exports.dijkstraPython=`
+def dijkstra(graph, start):
+  distances = {}
+  visited = set()
+  previous = {}
+  
+  for node in graph:
+    distances[node] = float('inf')
+    previous[node] = None
+  distances[start] = 0
+  
+  while len(visited) < len(graph):
+    min_node = None
+    min_distance = float('inf')
+    
+    for node in distances:
+      if node not in visited and distances[node] < min_distance:
+        min_node = node
+        min_distance = distances[node]
+    
+    if min_node is None:
+      break
+    visited.add(min_node)
+    
+    for neighbor in graph[min_node]:
+      new_distance = distances[min_node] + graph[min_node][neighbor]
+      if new_distance < distances[neighbor]:
+        distances[neighbor] = new_distance
+        previous[neighbor] = min_node
+  
+  return distances, previous
+`;
