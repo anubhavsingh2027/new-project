@@ -1,5 +1,3 @@
-
-
 export const dijkstraAlgo = (graph, start) => {
   const distances = {};
   const visited = new Set();
@@ -37,7 +35,46 @@ export const dijkstraAlgo = (graph, start) => {
   return { distances, previous };
 };
 
-exports.dijkstraCpp=`
+exports.dijkstraJavascript = `
+export const dijkstraAlgo = (graph, start) => {
+  const distances = {};
+  const visited = new Set();
+  const previous = {};
+
+  for (const node in graph) {
+    distances[node] = Infinity;
+    previous[node] = null;
+  }
+  distances[start] = 0;
+
+  while (visited.size < Object.keys(graph).length) {
+    let minNode = null;
+    let minDistance = Infinity;
+
+    for (const node in distances) {
+      if (!visited.has(node) && distances[node] < minDistance) {
+        minNode = node;
+        minDistance = distances[node];
+      }
+    }
+
+    if (minNode === null) break;
+    visited.add(minNode);
+
+    for (const neighbor in graph[minNode]) {
+      const newDistance = distances[minNode] + graph[minNode][neighbor];
+      if (newDistance < distances[neighbor]) {
+        distances[neighbor] = newDistance;
+        previous[neighbor] = minNode;
+      }
+    }
+  }
+
+  return { distances, previous };
+};
+`;
+
+exports.dijkstraCpp = `
 
 #include <iostream>
 #include <unordered_map>
@@ -93,7 +130,7 @@ pair<unordered_map<string, int>, unordered_map<string, string>> dijkstra(const G
 
 `;
 
-exports.dijkstraPython=`
+exports.dijkstraPython = `
 def dijkstra(graph, start):
   distances = {}
   visited = set()
@@ -125,7 +162,7 @@ def dijkstra(graph, start):
 
   return distances, previous
 `;
-exports.dijkstraJava=`
+exports.dijkstraJava = `
 import java.util.*;
 
 public class Dijkstra {
