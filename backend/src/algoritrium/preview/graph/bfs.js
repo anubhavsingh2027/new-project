@@ -1,0 +1,369 @@
+exports.bfsAlgo = `
+// BFS Algorithm - Concise Implementation
+function bfs(graph, startVertex) {
+  const visited = new Set([startVertex]);
+  const queue = [startVertex];
+  const result = [];
+
+  while (queue.length > 0) {
+    const vertex = queue.shift();
+    result.push(vertex);
+
+    for (const neighbor of graph[vertex] || []) {
+      if (!visited.has(neighbor)) {
+        visited.add(neighbor);
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  return result;
+}
+`;
+
+exports.bfsJavaScript=
+`
+// Breadth-First Search (BFS) Algorithm
+// BFS explores nodes level by level, using a queue data structure
+
+class Graph {
+  constructor() {
+    this.adjacencyList = new Map();
+  }
+
+  // Add a vertex to the graph
+  addVertex(vertex) {
+    if (!this.adjacencyList.has(vertex)) {
+      this.adjacencyList.set(vertex, []);
+    }
+  }
+
+  // Add an edge between two vertices
+  addEdge(vertex1, vertex2) {
+    this.addVertex(vertex1);
+    this.addVertex(vertex2);
+    this.adjacencyList.get(vertex1).push(vertex2);
+    this.adjacencyList.get(vertex2).push(vertex1); // For undirected graph
+  }
+
+  // BFS traversal starting from a given vertex
+  bfs(startVertex) {
+    const visited = new Set();
+    const queue = [startVertex];
+    const result = [];
+
+    visited.add(startVertex);
+
+    while (queue.length > 0) {
+      const vertex = queue.shift(); // Dequeue
+      result.push(vertex);
+
+      // Get all adjacent vertices
+      const neighbors = this.adjacencyList.get(vertex) || [];
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          visited.add(neighbor);
+          queue.push(neighbor); // Enqueue
+        }
+      }
+    }
+
+    return result;
+  }
+
+  // BFS to find shortest path between two vertices
+  shortestPath(startVertex, endVertex) {
+    const visited = new Set();
+    const queue = [[startVertex, [startVertex]]];
+    visited.add(startVertex);
+
+    while (queue.length > 0) {
+      const [vertex, path] = queue.shift();
+
+      if (vertex === endVertex) {
+        return path;
+      }
+
+      const neighbors = this.adjacencyList.get(vertex) || [];
+      for (const neighbor of neighbors) {
+        if (!visited.has(neighbor)) {
+          visited.add(neighbor);
+          queue.push([neighbor, [...path, neighbor]]);
+        }
+      }
+    }
+
+    return null; // No path found
+  }
+}
+
+// Example usage
+const graph = new Graph();
+
+// Add edges
+graph.addEdge("A", "B");
+graph.addEdge("A", "C");
+graph.addEdge("B", "D");
+graph.addEdge("C", "E");
+graph.addEdge("D", "E");
+graph.addEdge("E", "F");
+
+// BFS traversal from 'A'
+console.log("BFS Traversal from A:", graph.bfs("A"));
+
+// Find shortest path from 'A' to 'F'
+console.log("Shortest path from A to F:", graph.shortestPath("A", "F"));
+
+// Find shortest path from 'A' to 'E'
+console.log("Shortest path from A to E:", graph.shortestPath("A", "E"));
+
+module.exports = Graph;
+`
+exports.bfsCpp = `
+// Breadth-First Search (BFS) Algorithm in C++
+// BFS explores nodes level by level, using a queue data structure
+
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <queue>
+#include <unordered_set>
+
+using namespace std;
+
+class Graph {
+private:
+  unordered_map<int, vector<int>> adjacencyList;
+
+public:
+  // Add a vertex to the graph
+  void addVertex(int vertex) {
+    if (adjacencyList.find(vertex) == adjacencyList.end()) {
+      adjacencyList[vertex] = vector<int>();
+    }
+  }
+
+  // Add an edge between two vertices
+  void addEdge(int vertex1, int vertex2) {
+    addVertex(vertex1);
+    addVertex(vertex2);
+    adjacencyList[vertex1].push_back(vertex2);
+    adjacencyList[vertex2].push_back(vertex1); // For undirected graph
+  }
+
+  // BFS traversal starting from a given vertex
+  vector<int> bfs(int startVertex) {
+    unordered_set<int> visited;
+    queue<int> q;
+    vector<int> result;
+
+    visited.insert(startVertex);
+    q.push(startVertex);
+
+    while (!q.empty()) {
+      int vertex = q.front();
+      q.pop();
+      result.push_back(vertex);
+
+      for (int neighbor : adjacencyList[vertex]) {
+        if (visited.find(neighbor) == visited.end()) {
+          visited.insert(neighbor);
+          q.push(neighbor);
+        }
+      }
+    }
+
+    return result;
+  }
+};
+
+// Example usage
+int main() {
+  Graph graph;
+
+  graph.addEdge(0, 1);
+  graph.addEdge(0, 2);
+  graph.addEdge(1, 3);
+  graph.addEdge(2, 4);
+
+  vector<int> result = graph.bfs(0);
+
+  cout << "BFS Traversal: ";
+  for (int vertex : result) {
+    cout << vertex << " ";
+  }
+  cout << endl;
+
+  return 0;
+}
+`;
+
+exports.bfsPython = `
+# Breadth-First Search (BFS) Algorithm in Python
+# BFS explores nodes level by level, using a queue data structure
+
+from collections import deque, defaultdict
+
+class Graph:
+  def __init__(self):
+    self.adjacency_list = defaultdict(list)
+
+  # Add an edge between two vertices
+  def add_edge(self, vertex1, vertex2):
+    self.adjacency_list[vertex1].append(vertex2)
+    self.adjacency_list[vertex2].append(vertex1)  # For undirected graph
+
+  # BFS traversal starting from a given vertex
+  def bfs(self, start_vertex):
+    visited = set([start_vertex])
+    queue = deque([start_vertex])
+    result = []
+
+    while queue:
+      vertex = queue.popleft()
+      result.append(vertex)
+
+      for neighbor in self.adjacency_list[vertex]:
+        if neighbor not in visited:
+          visited.add(neighbor)
+          queue.append(neighbor)
+
+    return result
+
+  # BFS to find shortest path between two vertices
+  def shortest_path(self, start_vertex, end_vertex):
+    visited = set([start_vertex])
+    queue = deque([(start_vertex, [start_vertex])])
+
+    while queue:
+      vertex, path = queue.popleft()
+
+      if vertex == end_vertex:
+        return path
+
+      for neighbor in self.adjacency_list[vertex]:
+        if neighbor not in visited:
+          visited.add(neighbor)
+          queue.append((neighbor, path + [neighbor]))
+
+    return None  # No path found
+
+# Example usage
+graph = Graph()
+
+# Add edges
+graph.add_edge("A", "B")
+graph.add_edge("A", "C")
+graph.add_edge("B", "D")
+graph.add_edge("C", "E")
+graph.add_edge("D", "E")
+graph.add_edge("E", "F")
+
+# BFS traversal from 'A'
+print("BFS Traversal from A:", graph.bfs("A"))
+
+# Find shortest path from 'A' to 'F'
+print("Shortest path from A to F:", graph.shortest_path("A", "F"))
+
+# Find shortest path from 'A' to 'E'
+print("Shortest path from A to E:", graph.shortest_path("A", "E"))
+`;
+
+exports.bfsJava = `
+// Breadth-First Search (BFS) Algorithm in Java
+// BFS explores nodes level by level, using a queue data structure
+
+import java.util.*;
+class Graph {
+  private Map<Integer, List<Integer>> adjacencyList;
+
+  public Graph() {
+    this.adjacencyList = new HashMap<>();
+  }
+
+  // Add a vertex to the graph
+  public void addVertex(int vertex) {
+    if (!adjacencyList.containsKey(vertex)) {
+      adjacencyList.put(vertex, new ArrayList<>());
+    }
+  }
+
+  // Add an edge between two vertices
+  public void addEdge(int vertex1, int vertex2) {
+    addVertex(vertex1);
+    addVertex(vertex2);
+    adjacencyList.get(vertex1).add(vertex2);
+    adjacencyList.get(vertex2).add(vertex1); // For undirected graph
+  }
+
+  // BFS traversal starting from a given vertex
+  public List<Integer> bfs(int startVertex) {
+    Set<Integer> visited = new HashSet<>();
+    Queue<Integer> queue = new LinkedList<>();
+    List<Integer> result = new ArrayList<>();
+
+    visited.add(startVertex);
+    queue.add(startVertex);
+
+    while (!queue.isEmpty()) {
+      int vertex = queue.poll();
+      result.add(vertex);
+
+      for (int neighbor : adjacencyList.get(vertex)) {
+        if (!visited.contains(neighbor)) {
+          visited.add(neighbor);
+          queue.add(neighbor);
+        }
+      }
+    }
+
+    return result;
+  }
+
+  // BFS to find shortest path between two vertices
+  public List<Integer> shortestPath(int startVertex, int endVertex) {
+    Set<Integer> visited = new HashSet<>();
+    Queue<Pair<Integer, List<Integer>>> queue = new LinkedList<>();
+    visited.add(startVertex);
+    queue.add(new Pair<>(startVertex, new ArrayList<>(Arrays.asList(startVertex))));
+
+    while (!queue.isEmpty()) {
+      Pair<Integer, List<Integer>> current = queue.poll();
+      int vertex = current.getKey();
+      List<Integer> path = current.getValue();
+
+      if (vertex == endVertex) {
+        return path;
+      }
+
+      for (int neighbor : adjacencyList.get(vertex)) {
+        if (!visited.contains(neighbor)) {
+          visited.add(neighbor);
+          List<Integer> newPath = new ArrayList<>(path);
+          newPath.add(neighbor);
+          queue.add(new Pair<>(neighbor, newPath));
+        }
+      }
+    }
+
+    return null; // No path found
+  }
+}
+
+// Example usage
+public class BFSExample {
+  public static void main(String[] args) {
+    Graph graph = new Graph();
+
+    graph.addEdge(0, 1);
+    graph.addEdge(0, 2);
+    graph.addEdge(1, 3);
+    graph.addEdge(2, 4);
+    graph.addEdge(3, 4);
+    graph.addEdge(4, 5);
+
+    System.out.println("BFS Traversal from 0: " + graph.bfs(0));
+    System.out.println("Shortest path from 0 to 5: " + graph.shortestPath(0, 5));
+  }
+}
+`;
